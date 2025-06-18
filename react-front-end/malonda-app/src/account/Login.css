@@ -1,0 +1,127 @@
+/* Make container fill full viewport and center everything */
+.fullScreenContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(to right, #6a11cb, #2575fc);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+/* Card-style container for login */
+.loginContainer {
+  background-color: #ffffff;
+  padding: 2.5rem 2rem;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  box-sizing: border-box;
+}
+
+/* Title styling */
+.loginTitle {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+/* Form fields layout */
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Input labels and inputs */
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputLabel {
+  margin-bottom: 0.3rem;
+  font-size: 14px;
+  font-weight: 500;
+  color: #444;
+}
+
+.inputField {
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 15px;
+  transition: border-color 0.3s;
+}
+
+.inputField:focus {
+  outline: none;
+  border-color: #2575fc;
+}
+
+/* Login button */
+.loginButton {
+  padding: 0.7rem;
+  background-color: #2575fc;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.loginButton:hover {
+  background-color: #1a5ed9;
+}
+
+.loginButton:disabled {
+  background-color: #8ab4f8;
+  cursor: not-allowed;
+}
+
+/* Error message styling */
+.errorMessage {
+  color: red;
+  font-size: 14px;
+  text-align: center;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+/* Register or forgot password link area */
+.linkText {
+  text-align: center;
+  margin-top: 1.2rem;
+  font-size: 14px;
+  color: #444;
+}
+
+.link {
+  color: #2575fc;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+/* Responsive tweak for small screens */
+@media (max-width: 480px) {
+  .loginContainer {
+    padding: 2rem 1rem;
+  }
+
+  .loginTitle {
+    font-size: 20px;
+  }
+
+  .loginButton {
+    font-size: 14px;
+  }
+}

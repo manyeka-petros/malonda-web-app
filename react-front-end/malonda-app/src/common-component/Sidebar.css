@@ -1,0 +1,70 @@
+/* Sidebar.css */
+
+/* Main sidebar container */
+.sidebar {
+  width: 240px;
+  background-color: #1d3557; /* Dark blue */
+  color: white;
+  height: 100vh;
+  padding: 1rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  border-right: 1px solid #ddd;
+  z-index: 1;
+}
+
+/* Sidebar heading */
+.sidebar h3 {
+  margin-top: 0;
+  color: #ffffff;
+}
+
+/* List styling */
+.sidebar ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+/* List items */
+.sidebar li {
+  margin: 10px 0;
+}
+
+/* Link styles */
+.sidebar a {
+  text-decoration: none;
+  color: #a8dadc; /* Light blue */
+  display: block;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+/* Hover effect */
+.sidebar a:hover {
+  background-color: #457b9d;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* Active link */
+.sidebar a.active {
+  font-weight: bold;
+  background-color: #007bff;
+  color: white;
+}
+.sidebar {
+  width: 240px;
+  background-color: #1d3557;
+  color: white;
+  height: 100vh;
+  position: fixed;
+  top: 60px; /* matches navbar height */
+  left: 0;
+  padding: 1.5rem;
+  overflow-y: auto;
+  z-index: 100;
+}
