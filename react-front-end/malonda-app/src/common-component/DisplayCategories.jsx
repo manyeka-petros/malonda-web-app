@@ -1,7 +1,6 @@
-// src/components/DisplayCategories.jsx
 import { useEffect, useState } from 'react';
 import api from '../Auth/api';
-import Swal from 'sweetalert2'; // ✅ SweetAlert2
+import Swal from 'sweetalert2';
 import './DisplayCategories.css';
 
 const DisplayCategories = () => {
@@ -11,8 +10,6 @@ const DisplayCategories = () => {
     api.get('/categories/')
       .then(res => {
         setCategories(res.data);
-
-        // ✅ Show success alert once
         Swal.fire({
           title: 'Success!',
           text: 'Categories loaded successfully.',
@@ -23,8 +20,6 @@ const DisplayCategories = () => {
       })
       .catch(err => {
         console.error('Failed to fetch categories', err);
-
-        // ❌ Show error alert
         Swal.fire({
           title: 'Error!',
           text: 'Failed to load categories.',
@@ -34,6 +29,18 @@ const DisplayCategories = () => {
       });
   }, []);
 
+  const renderProduct = (product) => (
+    <div key={product.id} className="product-card">
+      <img
+        src={`http://127.0.0.1:8000${product.image}`}
+        alt={product.name}
+        className="product-image"
+      />
+      <p>{product.name}</p>
+      <p><strong>${product.price}</strong></p>
+    </div>
+  );
+
   return (
     <div className="categories-container">
       <h2 className="categories-title">📂 Categories</h2>
@@ -42,6 +49,13 @@ const DisplayCategories = () => {
           <div key={cat.id} className="category-card">
             <h4>{cat.name}</h4>
             <p>{cat.description}</p>
+            {cat.products && cat.products.length > 0 ? (
+              <div className="product-list">
+                {cat.products.map(renderProduct)}
+              </div>
+            ) : (
+              <p>No products in this category.</p>
+            )}
           </div>
         ))}
       </div>
