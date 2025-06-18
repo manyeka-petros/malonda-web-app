@@ -1,0 +1,101 @@
+.registerContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(to right, #f8ffae, #43c6ac);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.registerForm {
+  background-color: white;
+  padding: 2.5rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 450px;
+  box-sizing: border-box;
+}
+
+.registerForm h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.registerForm input,
+.registerForm select {
+  width: 100%;
+  padding: 0.9rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.registerForm input:focus,
+.registerForm select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.registerForm button {
+  width: 100%;
+  padding: 0.9rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.registerForm button:hover {
+  background-color: #0056b3;
+}
+
+.registerForm .errorMessage {
+  color: red;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.registerForm .linkText {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 1rem;
+  color: #333;
+}
+
+.registerForm .link {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.registerForm .link:hover {
+  text-decoration: underline;
+}
+
+/* Responsive tweaks for small devices */
+@media (max-width: 480px) {
+  .registerForm {
+    padding: 2rem 1rem;
+  }
+
+  .registerForm h2 {
+    font-size: 20px;
+  }
+
+  .registerForm button {
+    font-size: 14px;
+  }
+}
