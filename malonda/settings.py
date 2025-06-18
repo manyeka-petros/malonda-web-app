@@ -48,6 +48,9 @@ INSTALLED_APPS = [
     'corsheaders',
     'portalaccount',
     'products',
+    'cartwhishlist',
+    'orderediterm',
+
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True 

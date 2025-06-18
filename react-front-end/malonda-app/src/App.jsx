@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -14,12 +15,17 @@ import Register from './account/Register';
 import { useContext } from 'react';
 import { AuthContext, AuthProvider } from './Auth/AuthContext';
 
-// Components
+// Existing Components
 import CreateCategory from './common-component/CreateCategory';
 import DisplayCategories from './common-component/DisplayCategories';
 import CreateProduct from './common-component/CreateProduct';
 import DisplayProducts from './common-component/DisplayProducts';
 import ManagerDashboard from './common-component/ManagerDashboard';
+
+// ✅ New Components
+import CartView from './common-component/CartView';
+import WishlistView from './common-component/WishlistView';
+import OrdersView from './common-component/OrdersView';
 
 // ✅ Layout wrapper component
 const AppLayout = ({ children }) => {
@@ -57,6 +63,11 @@ export default function App() {
             <Route path="/categories" element={<DisplayCategories />} />
             <Route path="/products/create" element={<CreateProduct />} />
             <Route path="/products" element={<DisplayProducts />} />
+
+            {/* Cart / Wishlist / Orders */}
+            <Route path="/cart" element={<CartView />} />
+            <Route path="/wishlist" element={<WishlistView />} />
+            <Route path="/orders" element={<OrdersView />} />
 
             {/* Manager Dashboard */}
             <Route path="/manager-dashboard" element={<ManagerDashboard />} />
