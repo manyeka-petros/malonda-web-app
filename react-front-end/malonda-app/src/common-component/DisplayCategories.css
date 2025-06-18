@@ -40,3 +40,20 @@
   color: #555;
   font-size: 14px;
 }
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.product-card {
+  width: 120px;
+  text-align: center;
+}
+
+.product-image {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
