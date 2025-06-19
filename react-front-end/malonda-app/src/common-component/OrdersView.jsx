@@ -17,12 +17,21 @@ const OrdersView = () => {
       <h3>📦 Your Orders</h3>
       {orders.map(order => (
         <div key={order.id} className="order-card">
-          <p>Order #{order.id} - {order.status}</p>
-          <p>Total: ${order.total_price}</p>
+          <p><strong>Order #{order.id}</strong> - {order.status}</p>
+          <p>Total: <strong>${order.total_price}</strong></p>
           <p>Date: {new Date(order.created_at).toLocaleString()}</p>
-          <ul>
+          <ul className="order-items-list">
             {order.items.map(item => (
-              <li key={item.id}>{item.product_name} x {item.quantity}</li>
+              <li key={item.id} className="order-item">
+                {item.product_image && (
+                  <img
+                    src={item.product_image}
+                    alt={item.product_name}
+                    className="order-item-image"
+                  />
+                )}
+                <span>{item.product_name} × {item.quantity}</span>
+              </li>
             ))}
           </ul>
         </div>

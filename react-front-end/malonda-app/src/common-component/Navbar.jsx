@@ -28,7 +28,7 @@ export function Navbar() {
 
   return (
     <nav className="navbar">
-      <Link to="/" className="navbar-brand">MyEcommerce</Link>
+      <Link to="/" className="navbar-brand">Malonda</Link>
       <ul className="navbar-links">
         <li><Link to="/">Home</Link></li>
 

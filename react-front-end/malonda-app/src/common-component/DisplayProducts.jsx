@@ -45,9 +45,21 @@ const DisplayProducts = () => {
     );
   };
 
+  const handleAddToWishlist = (productId) => {
+    api.post('/wishlist/', { product: productId })
+      .then(() => Swal.fire('Success', 'Product added to wishlist!', 'success'))
+      .catch(() => Swal.fire('Error', 'Failed to add to wishlist.', 'error'));
+  };
+
+  const handleAddToCart = (productId) => {
+    api.post('/cart/', { product: productId, quantity: 1 })
+      .then(() => Swal.fire('Added!', 'Product added to cart!', 'success'))
+      .catch(() => Swal.fire('Error', 'Failed to add to cart.', 'error'));
+  };
+
   return (
     <div className="products-container">
-      <h2>Products</h2>
+      <h2 className="text-center mb-4">🛍️ Products</h2>
       <div className="products-grid">
         {products.map(prod => (
           <div key={prod.id} className="product-card">
@@ -57,6 +69,20 @@ const DisplayProducts = () => {
             <p><strong>Price:</strong> ${prod.price}</p>
             <p><strong>Stock:</strong> {prod.stock_quantity}</p>
             <p><strong>Category:</strong> {prod.category?.name || 'Uncategorized'}</p>
+            <div className="product-actions">
+              <button
+                className="btn btn-outline-primary btn-sm me-2"
+                onClick={() => handleAddToWishlist(prod.id)}
+              >
+                ❤️ Wishlist
+              </button>
+              <button
+                className="btn btn-success btn-sm"
+                onClick={() => handleAddToCart(prod.id)}
+              >
+                🛒 Add to Cart
+              </button>
+            </div>
           </div>
         ))}
       </div>

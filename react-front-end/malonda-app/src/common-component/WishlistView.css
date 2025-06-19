@@ -77,3 +77,19 @@
     padding: 5px 10px;
   }
 }
+.wishlist-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+}
+
+.wishlist-item {
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.wishlist-buttons {
+  display: flex;
+  gap: 10px;
+}
