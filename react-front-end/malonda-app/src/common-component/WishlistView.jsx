@@ -39,42 +39,43 @@ const WishlistView = () => {
   return (
     <div className="wishlist-container">
       <h3 className="text-center mb-4">💖 Wishlist</h3>
+
       {wishlist.length === 0 ? (
         <p className="text-center">Your wishlist is empty.</p>
       ) : (
-        wishlist.map(item => (
-          <div key={item.id} className="wishlist-item card mb-3">
-            <div className="row g-0">
-              <div className="col-md-2">
-                <img
-                  src={getImageUrl(item.product_image)}
-                  alt={item.product_name}
-                  className="img-fluid rounded-start"
-                  style={{ height: '100px', objectFit: 'cover' }}
-                />
-              </div>
-              <div className="col-md-10">
-                <div className="card-body">
-                  <h5 className="card-title">{item.product_name}</h5>
-                  <div className="wishlist-buttons mt-2">
-                    <button
-                      className="btn btn-danger btn-sm me-2"
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      ❌ Remove
-                    </button>
-                    <button
-                      className="btn btn-success btn-sm"
-                      onClick={() => handleOrder(item.product)}
-                    >
-                      🛒 Order Now
-                    </button>
+        <div className="card wishlist-single-card shadow">
+          <div className="card-body">
+            <h5 className="card-title">Your Favorite Items</h5>
+            <div className="wishlist-grid">
+              {wishlist.map(item => (
+                <div key={item.id} className="wishlist-card-item">
+                  <img
+                    src={getImageUrl(item.product_image)}
+                    alt={item.product_name}
+                    className="wishlist-item-img"
+                  />
+                  <div className="wishlist-item-details">
+                    <strong>{item.product_name}</strong>
+                    <div className="wishlist-buttons mt-2">
+                      <button
+                        className="btn btn-danger btn-sm me-2"
+                        onClick={() => handleDelete(item.id)}
+                      >
+                        ❌ Remove
+                      </button>
+                      <button
+                        className="btn btn-success btn-sm"
+                        onClick={() => handleOrder(item.product)}
+                      >
+                        🛒 Order
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
-        ))
+        </div>
       )}
     </div>
   );

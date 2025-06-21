@@ -68,3 +68,48 @@
   overflow-y: auto;
   z-index: 100;
 }
+.sidebar {
+  width: 250px;
+  background-color: #f8f9fa;
+  padding: 1rem;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  border-right: 1px solid #ddd;
+}
+
+.sidebar h5 {
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.sidebar li {
+  margin-bottom: 1rem;
+}
+
+.sidebar a {
+  text-decoration: none;
+  color: #333;
+  display: block;
+}
+
+.sidebar a.active {
+  font-weight: bold;
+  color: #007bff;
+}
+
+.cart-badge {
+  background: red;
+  color: white;
+  border-radius: 10px;
+  padding: 2px 6px;
+  font-size: 0.75rem;
+  margin-left: 5px;
+}

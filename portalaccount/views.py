@@ -46,17 +46,27 @@ class LoginView(APIView):
             })
         return Response({"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
+from rest_framework_simplejwt.tokens import RefreshToken, TokenError
+from rest_framework import status, permissions
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 class LogoutView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
+        refresh_token = request.data.get("refresh")
+        if not refresh_token:
+            return Response({"detail": "Refresh token is required."}, status=status.HTTP_400_BAD_REQUEST)
+
         try:
-            refresh_token = request.data.get("refresh")
-            if not refresh_token:
-                return Response({"detail": "Refresh token is required."}, status=status.HTTP_400_BAD_REQUEST)
             token = RefreshToken(refresh_token)
             token.blacklist()
-            return Response(status=status.HTTP_205_RESET_CONTENT)
+            return Response({"detail": "Logout successful"}, status=status.HTTP_205_RESET_CONTENT)
+
+        except TokenError as e:
+            # Handles already blacklisted token
+            return Response({"detail": str(e)}, status=status.HTTP_205_RESET_CONTENT)
+
         except Exception as e:
-            logger.error(f"Logout error: {e}")
-            return Response({"detail": "Invalid token or error processing logout."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"detail": "Logout failed: " + str(e)}, status=status.HTTP_400_BAD_REQUEST)

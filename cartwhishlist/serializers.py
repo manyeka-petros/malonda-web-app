@@ -10,15 +10,24 @@ class CartSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cart
-        fields = ['id', 'user', 'product', 'product_name', 'product_image', 'product_price', 'quantity', 'added_at']
-        read_only_fields = ['added_at']
+        fields = [
+            'id',
+            'user',             # kept for reference but read-only
+            'product',
+            'product_name',
+            'product_image',
+            'product_price',
+            'quantity',
+            'added_at'
+        ]
+        read_only_fields = ['user', 'added_at']
 
     def get_product_image(self, obj):
         request = self.context.get('request')
         image_url = obj.product.image.url if obj.product.image else ''
         if request and image_url:
             return request.build_absolute_uri(image_url)
-        return image_url
+        return image_url or None
 
 
 class WishlistSerializer(serializers.ModelSerializer):
@@ -28,11 +37,20 @@ class WishlistSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Wishlist
-        fields = ['id', 'product', 'product_name', 'product_price', 'product_image', 'added_at']
+        fields = [
+            'id',
+            'user',             # Add user field explicitly
+            'product',
+            'product_name',
+            'product_price',
+            'product_image',
+            'added_at'
+        ]
+        read_only_fields = ['user', 'added_at']
 
     def get_product_image(self, obj):
         request = self.context.get('request')
         image_url = obj.product.image.url if obj.product.image else ''
         if request and image_url:
             return request.build_absolute_uri(image_url)
-        return image_url
+        return image_url or None

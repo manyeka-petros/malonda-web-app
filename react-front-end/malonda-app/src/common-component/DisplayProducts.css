@@ -1,97 +1,73 @@
-/* DisplayProducts.css */
-
 .products-container {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 2rem auto;
-  padding: 1rem;
+  padding: 2rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #222;
 }
 
-.products-container h2 {
+.section-title {
   text-align: center;
-  margin-bottom: 1.5rem;
-  font-weight: 700;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
   color: #2c3e50;
 }
 
 .products-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.2rem;
-  justify-content: center;
-}
-
-.product-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 1rem;
-  width: 220px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.07);
-  display: flex;
-  flex-direction: column;
-  background-color: #fff;
-  transition: box-shadow 0.3s ease;
-}
-
-.product-card:hover {
-  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
-}
-
-.product-card h4 {
-  margin: 0 0 0.5rem;
-  font-weight: 600;
-  color: #333;
-}
-
-.product-card p {
-  margin: 0.3rem 0;
-  font-size: 0.9rem;
-  color: #555;
-}
-
-.product-image {
-  margin-top: 1rem;
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 6px;
-}
-.products-container {
-  padding: 2rem;
-}
-
-.products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 2rem;
 }
 
 .product-card {
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 1rem;
-  background-color: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  text-align: center;
-  transition: transform 0.3s ease;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .product-card:hover {
   transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
 }
 
 .product-image {
   width: 100%;
   height: 200px;
   object-fit: cover;
-  border-radius: 6px;
-  margin-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.product-details {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+.product-details h4 {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+  color: #34495e;
+}
+
+.product-details .description {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.75rem;
 }
 
 .product-actions {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   gap: 10px;
   margin-top: 1rem;
+}
+
+.product-actions button {
+  flex: 1;
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../Auth/api';
 import Swal from 'sweetalert2';
-import './DisplayProducts.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const DisplayProducts = () => {
   const [products, setProducts] = useState([]);
@@ -23,24 +23,18 @@ const DisplayProducts = () => {
   }, []);
 
   const renderProductImage = (product) => {
-    if (product.image) {
-      const imageUrl = product.image.startsWith('http')
+    const imageUrl = product.image
+      ? product.image.startsWith('http')
         ? product.image
-        : `http://127.0.0.1:8000${product.image.startsWith('/') ? '' : '/'}${product.image}`;
+        : `http://127.0.0.1:8000${product.image.startsWith('/') ? '' : '/'}${product.image}`
+      : 'https://via.placeholder.com/300x200?text=No+Image';
 
-      return (
-        <img
-          src={imageUrl}
-          alt={product.name}
-          className="product-image"
-        />
-      );
-    }
     return (
       <img
-        src="https://via.placeholder.com/150"
-        alt="No image available"
-        className="product-image"
+        src={imageUrl}
+        alt={product.name}
+        className="card-img-top"
+        style={{ height: '200px', objectFit: 'cover' }}
       />
     );
   };
@@ -58,30 +52,38 @@ const DisplayProducts = () => {
   };
 
   return (
-    <div className="products-container">
-      <h2 className="text-center mb-4">🛍️ Products</h2>
-      <div className="products-grid">
+    <div className="container py-5">
+      <h2 className="text-center mb-4">🛍️ Explore Our Products</h2>
+      <div className="row g-4">
         {products.map(prod => (
-          <div key={prod.id} className="product-card">
-            {renderProductImage(prod)}
-            <h4>{prod.name}</h4>
-            <p>{prod.description}</p>
-            <p><strong>Price:</strong> ${prod.price}</p>
-            <p><strong>Stock:</strong> {prod.stock_quantity}</p>
-            <p><strong>Category:</strong> {prod.category?.name || 'Uncategorized'}</p>
-            <div className="product-actions">
-              <button
-                className="btn btn-outline-primary btn-sm me-2"
-                onClick={() => handleAddToWishlist(prod.id)}
-              >
-                ❤️ Wishlist
-              </button>
-              <button
-                className="btn btn-success btn-sm"
-                onClick={() => handleAddToCart(prod.id)}
-              >
-                🛒 Add to Cart
-              </button>
+          <div key={prod.id} className="col-sm-6 col-md-4 col-lg-3">
+            <div className="card h-100 shadow-sm">
+              {renderProductImage(prod)}
+              <div className="card-body d-flex flex-column">
+                <h5 className="card-title">{prod.name}</h5>
+                <p className="card-text text-muted" style={{ fontSize: '0.9rem' }}>
+                  {prod.description}
+                </p>
+                <ul className="list-unstyled mb-3">
+                  <li><strong>Price:</strong> ${prod.price}</li>
+                  <li><strong>Stock:</strong> {prod.stock_quantity}</li>
+                  <li><strong>Category:</strong> {prod.category?.name || 'Uncategorized'}</li>
+                </ul>
+                <div className="mt-auto d-flex justify-content-between">
+                  <button
+                    className="btn btn-outline-primary btn-sm"
+                    onClick={() => handleAddToWishlist(prod.id)}
+                  >
+                    ❤️ Wishlist
+                  </button>
+                  <button
+                    className="btn btn-success btn-sm"
+                    onClick={() => handleAddToCart(prod.id)}
+                  >
+                    🛒 Add to Cart
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         ))}

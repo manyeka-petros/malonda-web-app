@@ -1,65 +1,62 @@
 /* Navbar.css */
-
-.navbar {
-  background-color: #007bff;
-  padding: 1rem 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-family: 'Segoe UI', sans-serif;
-  position: fixed;
+.custom-navbar {
+  background: linear-gradient(90deg, #0d6efd, #6610f2);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: background 0.4s ease-in-out;
+  position: sticky;
   top: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
   z-index: 1000;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Brand/logo */
-.navbar-brand {
-  color: white;
-  font-size: 1.5rem;
+.brand-animate {
   font-weight: bold;
-  text-decoration: none;
+  font-size: 1.5rem;
+  animation: fadeSlideIn 1s ease-out;
 }
 
-/* Link container */
-.navbar-links {
-  list-style: none;
-  display: flex;
-  gap: 1rem;
-  margin: 0;
-  padding: 0;
+.nav-link {
+  color: white !important;
+  margin-left: 1rem;
+  transition: transform 0.3s ease, color 0.3s ease;
 }
 
-/* Individual links */
-.navbar-links li {
-  display: inline;
+.link-hover:hover {
+  transform: scale(1.1);
+  color: #ffd700 !important;
 }
 
-.navbar-links a {
-  color: white;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s;
+.logout-btn {
+  transition: all 0.3s ease;
 }
 
-.navbar-links a:hover {
-  color: #cce5ff;
+.logout-btn:hover {
+  background-color: #ffc107;
+  color: black;
+  border-color: #ffc107;
 }
 
-/* Logout button */
-.logout-button {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  padding: 0.4rem 0.8rem;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.logout-button:hover {
-  background-color: #c82333;
+.nav-slide {
+  animation: slideIn 0.5s ease forwards;
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
