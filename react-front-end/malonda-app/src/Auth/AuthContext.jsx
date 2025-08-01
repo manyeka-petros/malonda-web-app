@@ -24,6 +24,12 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
+  // Check if the user is a manager
+  const isManager = () => user?.role === 'manager';
+
+  // Check if the user is a customer
+  const isCustomer = () => user?.role === 'customer';
+
   // Called after login
   const login = (accessToken, userData) => {
     localStorage.setItem('access', accessToken);
@@ -42,7 +48,16 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, user, login, logout }}>
+    <AuthContext.Provider 
+      value={{ 
+        isLoggedIn, 
+        user, 
+        login, 
+        logout,
+        isManager,  // role check helper
+        isCustomer  // role check helper
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

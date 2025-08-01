@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../Auth/api';
 import { AuthContext } from '../Auth/AuthContext';
@@ -8,9 +8,18 @@ import './Login.css';
 export default function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
   const [isLoading, setIsLoading] = useState(false);
+  const [rememberEmail, setRememberEmail] = useState(false);
 
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const savedEmail = localStorage.getItem('rememberedEmail');
+    if (savedEmail) {
+      setForm(prev => ({ ...prev, email: savedEmail }));
+      setRememberEmail(true);
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,16 +27,17 @@ export default function Login() {
 
     try {
       const res = await api.post('/login/', form);
-
       const { access, refresh, user: userData } = res.data;
 
       if (!userData || !access) {
         throw new Error("Missing user data or token in response");
       }
 
-      console.log("✅ Login successful!");
-      console.log("🔑 Access token:", access);
-      console.log("🔄 Refresh token:", refresh);
+      if (rememberEmail) {
+        localStorage.setItem('rememberedEmail', form.email);
+      } else {
+        localStorage.removeItem('rememberedEmail');
+      }
 
       localStorage.setItem('access', access);
       localStorage.setItem('refresh', refresh);
@@ -42,69 +52,81 @@ export default function Login() {
         showConfirmButton: false,
       });
 
-      navigate('/');
+      if (userData.role === 'manager') {
+        navigate('/dashboard');
+      } else if (userData.role === 'customer') {
+        navigate('/products');
+      } else {
+        navigate('/');
+      }
     } catch (err) {
-      console.error("❌ Login error:", err);
-
       Swal.fire({
         icon: 'error',
         title: 'Login Failed',
-        text: 'Invalid email or password',
+        text: err.response?.data?.detail || 'Invalid email or password',
       });
-
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="fullScreenContainer">
-      <div className="loginContainer">
-        <h2 className="loginTitle">Login</h2>
+    <div className="login-container">
+      <div className="login-box">
+        <h2 className="login-title">Welcome Back</h2>
+        <p className="login-subtitle">Sign in to continue</p>
 
-        <form onSubmit={handleSubmit} className="loginForm">
-          <div className="inputGroup">
-            <label htmlFor="email" className="inputLabel">Email</label>
+        <form onSubmit={handleSubmit} className="login-form">
+          <div className="form-group">
             <input
-              id="email"
-              name="email"
               type="email"
               value={form.email}
               onChange={e => setForm({ ...form, email: e.target.value })}
-              placeholder="your@email.com"
-              className="inputField"
+              placeholder="Email"
+              className="form-input"
               required
+              autoComplete="username"
             />
           </div>
 
-          <div className="inputGroup">
-            <label htmlFor="password" className="inputLabel">Password</label>
+          <div className="form-group">
             <input
-              id="password"
-              name="password"
               type="password"
               value={form.password}
               onChange={e => setForm({ ...form, password: e.target.value })}
-              placeholder="••••••••"
-              className="inputField"
+              placeholder="Password"
+              className="form-input"
               required
+              autoComplete="current-password"
             />
           </div>
 
-          <button
-            type="submit"
-            className="loginButton"
-            disabled={isLoading}
-          >
-            {isLoading ? 'Logging in...' : 'Login'}
+          <div className="form-options">
+            <label className="remember-me">
+              <input 
+                type="checkbox" 
+                checked={rememberEmail}
+                onChange={(e) => setRememberEmail(e.target.checked)}
+              /> 
+              Remember my email
+            </label>
+            <Link to="/forgot-password" className="forgot-password">
+              Forgot password?
+            </Link>
+          </div>
+
+          <button type="submit" className="login-btn" disabled={isLoading}>
+            {isLoading ? (
+              <>
+                <span className="spinner"></span>
+                Logging in...
+              </>
+            ) : 'Login'}
           </button>
         </form>
 
-        <p className="linkText">
-          Don't have an account?{' '}
-          <Link to="/register" className="link">
-            Register here
-          </Link>
-        </p>
+        <div className="login-footer">
+          <p>Don't have an account? <Link to="/register" className="register-link">Sign up</Link></p>
+        </div>
       </div>
     </div>
   );

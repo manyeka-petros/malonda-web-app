@@ -1,16 +1,5 @@
 /* Reset and layout foundation */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
-body, html {
-  width: 100%;
-  height: 100%;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f4f4f4;
-}
 
 /* Root container fills the screen */
 #root {

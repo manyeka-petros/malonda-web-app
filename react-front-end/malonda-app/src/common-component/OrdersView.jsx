@@ -5,11 +5,22 @@ import './OrdersView.css'; // Keep this for styling
 
 const OrdersView = () => {
   const [orders, setOrders] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    api.get('/orders/')
-      .then(res => setOrders(res.data))
-      .catch(() => Swal.fire('Error', 'Failed to fetch your orders.', 'error'));
+    const fetchOrders = async () => {
+      try {
+        setIsLoading(true);
+        const res = await api.get('/orders/');
+        setOrders(res.data);
+      } catch {
+        Swal.fire('Error', 'Failed to fetch your orders.', 'error');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchOrders();
   }, []);
 
   const getImageUrl = (img) => {
@@ -18,6 +29,15 @@ const OrdersView = () => {
       ? img
       : `http://127.0.0.1:8000${img.startsWith('/') ? '' : '/'}${img}`;
   };
+
+  if (isLoading) {
+    return (
+      <div className="orders-container text-center" style={{ padding: '2rem' }}>
+        <div className="spinner-border" role="status" />
+        <p>Loading your orders...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="orders-container">
@@ -30,14 +50,15 @@ const OrdersView = () => {
           <div key={order.id} className="order-card card shadow mb-4">
             <div className="card-header d-flex justify-content-between align-items-center">
               <h5 className="mb-0">Order #{order.id}</h5>
-              <span className={`badge bg-${order.status === 'Paid' ? 'success' : 'secondary'}`}>
+              {/* Status badge: You may want to handle more statuses */}
+              <span className={`badge bg-${order.status.toLowerCase() === 'paid' ? 'success' : 'secondary'}`}>
                 {order.status}
               </span>
             </div>
             <div className="card-body">
               <p><strong>Total:</strong> ${parseFloat(order.total_price).toFixed(2)}</p>
               <p><strong>Date:</strong> {new Date(order.created_at).toLocaleString()}</p>
-              
+
               <ul className="list-group">
                 {order.items.map(item => (
                   <li key={item.id} className="list-group-item d-flex align-items-center">

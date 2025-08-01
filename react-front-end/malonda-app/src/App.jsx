@@ -22,6 +22,11 @@ import OrdersView from './common-component/OrdersView';
 import StripeCheckoutButton from './common-component/StripeCheckoutButton';
 import PaymentSuccess from './common-component/PaymentSuccess';
 import PaymentCancel from './common-component/PaymentCancel'; // optional
+import ProductDetails from './common-component/ProductDetails';
+import HomePage from './common-component/HomePage';
+import Dashboard from './common-component/Dashboard';
+import AboutUs from './common-component/AboutUs';
+
 
 function AppContent() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -30,6 +35,8 @@ function AppContent() {
     <div>
       <Navbar />
       <div className="d-flex">
+        
+
         {isLoggedIn && <Sidebar />}
         <div className="flex-grow-1 p-4" style={{ marginLeft: isLoggedIn ? '250px' : '0' }}>
           <Routes>
@@ -40,7 +47,7 @@ function AppContent() {
             <Route path="/cancel" element={<PaymentCancel />} />
 
             {/* Protected Routes */}
-            <Route path="/" element={<DisplayProducts />} />
+            <Route path="/" element={<HomePage />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/products" element={<DisplayProducts />} />
             <Route path="/wishlist" element={<WishlistView />} />
@@ -49,6 +56,9 @@ function AppContent() {
             <Route path="/categories/create" element={<CreateCategory />} />
             <Route path="/products/create" element={<CreateProduct />} />
             <Route path="/cart" element={<CartView />} />
+            <Route path="/dashboard" element={<Dashboard/>} />
+            <Route path="/about" element={<AboutUs/>} />
+            <Route path="/products/:id" element={<ProductDetails />} />
             <Route path="/checkout" element={<StripeCheckoutButton />} />
           </Routes>
         </div>

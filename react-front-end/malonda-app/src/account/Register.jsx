@@ -1,15 +1,14 @@
 import { useState } from 'react';
 import api from '../Auth/api';
 import Swal from 'sweetalert2';
-import './Register.css'; // Optional, ensure this file exists
+import './Register.css';
 
 export default function Register() {
   const [form, setForm] = useState({
     email: '',
     password: '',
     first_name: '',
-    last_name: '',
-    role: 'customer',
+    last_name: ''
   });
 
   const handleChange = (e) => {
@@ -46,51 +45,69 @@ export default function Register() {
   };
 
   return (
-    <div className="registerContainer">
-      <form onSubmit={handleSubmit} className="registerForm">
-        <h2>Register</h2>
-        <input
-          name="first_name"
-          onChange={handleChange}
-          value={form.first_name}
-          placeholder="First Name"
-          required
-        />
-        <input
-          name="last_name"
-          onChange={handleChange}
-          value={form.last_name}
-          placeholder="Last Name"
-          required
-        />
-        <input
-          name="email"
-          type="email"
-          onChange={handleChange}
-          value={form.email}
-          placeholder="Email"
-          required
-        />
-        <input
-          name="password"
-          type="password"
-          onChange={handleChange}
-          value={form.password}
-          placeholder="Password"
-          required
-        />
-        <select
-          name="role"
-          onChange={handleChange}
-          value={form.role}
-          required
-        >
-          <option value="customer">Customer</option>
-          <option value="manager">Manager</option>
-          
-        </select>
-        <button type="submit">Register</button>
-      </form>
+    <div className="register-container">
+      <div className="register-box">
+        <div className="register-header">
+          <h2>Create Account</h2>
+          <p>Join us today</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="register-form">
+          <div className="form-group">
+            <input
+              name="first_name"
+              onChange={handleChange}
+              value={form.first_name}
+              placeholder="First Name"
+              className="form-input"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <input
+              name="last_name"
+              onChange={handleChange}
+              value={form.last_name}
+              placeholder="Last Name"
+              className="form-input"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <input
+              name="email"
+              type="email"
+              onChange={handleChange}
+              value={form.email}
+              placeholder="Email"
+              className="form-input"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <input
+              name="password"
+              type="password"
+              onChange={handleChange}
+              value={form.password}
+              placeholder="Password"
+              className="form-input"
+              required
+            />
+          </div>
+
+          <button type="submit" className="register-btn">
+            Register
+          </button>
+        </form>
+
+        <div className="register-footer">
+          <p>Already have an account? <a href="/login" className="login-link">Sign in</a></p>
+        </div>
+      </div>
     </div>
   );
 }

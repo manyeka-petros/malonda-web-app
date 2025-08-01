@@ -1,9 +1,25 @@
 from rest_framework import serializers
 from .models import Cart, Wishlist
-from products.models import Product
 
 
-class CartSerializer(serializers.ModelSerializer):
+class ProductImageMixin:
+    """
+    Mixin to provide method for building absolute product image URL.
+    """
+    def get_product_image(self, obj):
+        request = self.context.get('request')
+
+        # Get the first related image from the product.images reverse relation
+        first_image = obj.product.images.first()
+        if first_image and first_image.image:
+            image_url = first_image.image.url
+            return request.build_absolute_uri(image_url) if request else image_url
+
+        # Fallback placeholder
+        return "/static/images/placeholder.png"
+
+
+class CartSerializer(ProductImageMixin, serializers.ModelSerializer):
     product_name = serializers.ReadOnlyField(source='product.name')
     product_image = serializers.SerializerMethodField()
     product_price = serializers.ReadOnlyField(source='product.price')
@@ -12,25 +28,18 @@ class CartSerializer(serializers.ModelSerializer):
         model = Cart
         fields = [
             'id',
-            'user',             # kept for reference but read-only
+            'user',
             'product',
             'product_name',
             'product_image',
             'product_price',
             'quantity',
-            'added_at'
+            'added_at',
         ]
         read_only_fields = ['user', 'added_at']
 
-    def get_product_image(self, obj):
-        request = self.context.get('request')
-        image_url = obj.product.image.url if obj.product.image else ''
-        if request and image_url:
-            return request.build_absolute_uri(image_url)
-        return image_url or None
 
-
-class WishlistSerializer(serializers.ModelSerializer):
+class WishlistSerializer(ProductImageMixin, serializers.ModelSerializer):
     product_name = serializers.ReadOnlyField(source='product.name')
     product_price = serializers.ReadOnlyField(source='product.price')
     product_image = serializers.SerializerMethodField()
@@ -39,18 +48,11 @@ class WishlistSerializer(serializers.ModelSerializer):
         model = Wishlist
         fields = [
             'id',
-            'user',             # Add user field explicitly
+            'user',
             'product',
             'product_name',
             'product_price',
             'product_image',
-            'added_at'
+            'added_at',
         ]
         read_only_fields = ['user', 'added_at']
-
-    def get_product_image(self, obj):
-        request = self.context.get('request')
-        image_url = obj.product.image.url if obj.product.image else ''
-        if request and image_url:
-            return request.build_absolute_uri(image_url)
-        return image_url or None

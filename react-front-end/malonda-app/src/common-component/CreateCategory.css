@@ -1,64 +1,178 @@
-/* CreateCategory.css */
-
+/* Base Styles */
 .create-category-container {
-  max-width: 400px;
-  margin: 2rem auto;
+  max-width: 600px;
+  margin: 0 auto;
   padding: 2rem;
-  background-color: #f9fafb;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  color: #2d3748;
 }
 
-.create-category-container h2 {
+.create-category-header {
   text-align: center;
-  margin-bottom: 1.5rem;
-  font-weight: 700;
-  color: #2c3e50;
+  margin-bottom: 2rem;
 }
 
-.create-category-form {
+.create-category-header h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #2d3748;
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
-.create-category-form input[type="text"],
-.create-category-form textarea {
+.header-icon {
+  color: #4299e1;
+}
+
+.subtitle {
+  color: #718096;
+  font-size: 0.95rem;
+}
+
+/* Form Styles */
+.create-category-form {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+              0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #4a5568;
+}
+
+.form-input, .form-textarea {
+  width: 100%;
   padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
   font-size: 1rem;
-  border: 1.8px solid #ddd;
-  border-radius: 6px;
-  transition: border-color 0.3s ease;
+  transition: all 0.2s ease;
+}
+
+.form-input:focus, .form-textarea:focus {
+  outline: none;
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+}
+
+.form-textarea {
+  min-height: 100px;
   resize: vertical;
 }
 
-.create-category-form input[type="text"]:focus,
-.create-category-form textarea:focus {
-  outline: none;
-  border-color: #4a90e2;
-  box-shadow: 0 0 5px #4a90e2;
-  background-color: #fff;
-}
-
-.create-category-form textarea {
-  min-height: 100px;
-  font-family: inherit;
-}
-
-.create-category-form button {
-  padding: 0.75rem 0;
-  font-size: 1.1rem;
-  font-weight: 600;
-  background-color: #4a90e2;
+/* Button Styles */
+.submit-button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #4299e1;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
-.create-category-form button:hover {
-  background-color: #357abd;
+.submit-button:hover {
+  background-color: #3182ce;
+  transform: translateY(-1px);
+}
+
+.submit-button:disabled {
+  background-color: #a0aec0;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.button-loader {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Alert Customization */
+.custom-swal-popup {
+  border-radius: 12px;
+}
+
+.success-alert-content {
+  text-align: center;
+  padding: 1rem;
+}
+
+.success-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 1rem;
+  background-color: #48bb78;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.error-alert-content {
+  text-align: center;
+  padding: 1rem;
+}
+
+.error-icon {
+  color: #e53e3e;
+  margin-bottom: 1rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .create-category-container {
+    padding: 1.5rem;
+  }
+  
+  .create-category-form {
+    padding: 1.5rem;
+  }
+  
+  .create-category-header h2 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .create-category-container {
+    padding: 1rem;
+  }
+  
+  .create-category-form {
+    padding: 1rem;
+  }
+  
+  .form-input, .form-textarea {
+    padding: 0.65rem 0.75rem;
+  }
 }

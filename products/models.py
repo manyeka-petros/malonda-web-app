@@ -35,14 +35,25 @@ class Product(models.Model):
         null=True,
         related_name='products'
     )
-    image = models.ImageField(upload_to='product_images/', blank=True, null=True)  # Single image field
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
         if not self.sku:
-            self.sku = f"SKU-{uuid.uuid4().hex[:8].upper()}"  # e.g., SKU-9F7A3B2C
+            self.sku = f"SKU-{uuid.uuid4().hex[:8].upper()}"
         super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
+
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name='images'
+    )
+    image = models.ImageField(upload_to='product_images/')
+
+    def __str__(self):
+        return f"Image for {self.product.name}"

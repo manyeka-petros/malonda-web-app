@@ -1,46 +1,197 @@
+/* Base Styles */
 .wishlist-container {
-  padding: 2rem;
-  background-color: #f9f9f9;
-  min-height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
 }
 
-.wishlist-single-card {
-  padding: 1.5rem;
-  background: white;
-  border-radius: 10px;
-  transition: all 0.3s ease-in-out;
+.wishlist-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
 }
 
-.wishlist-card-item {
+.wishlist-header h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+}
+
+.wishlist-subtitle {
+  color: #718096;
+  font-size: 1rem;
+}
+
+/* Loading State */
+.wishlist-loading {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  margin-bottom: 1.2rem;
-  border-bottom: 1px solid #eaeaea;
-  padding-bottom: 1rem;
+  justify-content: center;
+  min-height: 300px;
 }
 
-.wishlist-item-img {
-  width: 100px;
-  height: 100px;
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: #4299e1;
+  animation: spin 1s ease-in-out infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Empty State */
+.wishlist-empty {
+  text-align: center;
+  padding: 3rem 0;
+  background-color: #f8fafc;
+  border-radius: 12px;
+  margin: 2rem 0;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.wishlist-empty h3 {
+  font-size: 1.5rem;
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+}
+
+.wishlist-empty p {
+  color: #718096;
+  font-size: 1rem;
+}
+
+/* Wishlist Grid */
+.wishlist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.wishlist-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.wishlist-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.wishlist-card-image {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.wishlist-card-image img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  border-radius: 8px;
-  margin-right: 15px;
-  border: 1px solid #ccc;
+  transition: transform 0.3s ease;
 }
 
-.wishlist-item-details {
-  flex: 1;
-}
-
-.wishlist-buttons button {
-  transition: all 0.2s ease-in-out;
-}
-
-.wishlist-buttons button:hover {
+.wishlist-card:hover .wishlist-card-image img {
   transform: scale(1.05);
 }
 
-.wishlist-grid {
+.wishlist-card-content {
+  padding: 1.25rem;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
+}
+
+.wishlist-card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 1rem;
+  flex-grow: 1;
+}
+
+.wishlist-card-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.wishlist-action-btn {
+  flex: 1;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.wishlist-order-btn {
+  background-color: #48bb78;
+  color: white;
+}
+
+.wishlist-order-btn:hover {
+  background-color: #38a169;
+}
+
+.wishlist-remove-btn {
+  background-color: #fef2f2;
+  color: #b91c1c;
+}
+
+.wishlist-remove-btn:hover {
+  background-color: #fee2e2;
+}
+
+.icon {
+  font-size: 1rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .wishlist-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+  
+  .wishlist-card-actions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .wishlist-container {
+    padding: 1rem 0.5rem;
+  }
+  
+  .wishlist-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .wishlist-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .wishlist-card-image {
+    height: 180px;
+  }
 }
