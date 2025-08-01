@@ -17,7 +17,7 @@ PAYCHANGU_BASE_URL = "https://api.paychangu.com"
 HEADERS = {
     "Accept": "application/json",
     "Content-Type": "application/json",
-    "Authorization": f"Bearer {settings.PAYCHANGU_SECRET_KEY}",  # Use Secret Key from settings
+    
 }
 
 
