@@ -1,22 +1,33 @@
 # 1. Use Python base image
-FROM python:3.11
+FROM python:3.11-slim
 
-# 2. Set working directory
+# 2. Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# 3. Set working directory
 WORKDIR /app
 
-# 3. Install dependencies
+# 4. Install system dependencies (for Pillow, psycopg2, etc.)
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libpq-dev \
+    libjpeg-dev \
+    zlib1g-dev \
+    && apt-get clean
+
+# 5. Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 4. Copy all project files
+# 6. Copy project files
 COPY . .
 
-# 5. Collect static files
+# 7. Collect static files
 RUN python manage.py collectstatic --noinput
 
-# 6. Expose port 8000
+# 8. Expose port 8000
 EXPOSE 8000
 
-# 7. Run the app with gunicorn
+# 9. Run the app with gunicorn
 CMD ["gunicorn", "malonda.wsgi:application", "--bind", "0.0.0.0:8000"]
-
