@@ -14,10 +14,12 @@ from django.utils.decorators import method_decorator
 
 # PayChangu API Base URL
 PAYCHANGU_BASE_URL = "https://api.paychangu.com"
+
+# Include Bearer token with secret_key for authorization
 HEADERS = {
     "Accept": "application/json",
     "Content-Type": "application/json",
-    
+    "Authorization": f"Bearer {settings.PAYCHANGU_SECRET_KEY}"
 }
 
 

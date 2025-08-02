@@ -4,11 +4,12 @@ from rest_framework.response import Response
 from rest_framework import permissions, status
 from .models import User
 from .serializers import UserSerializer, LoginSerializer
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 from django.contrib.auth import authenticate
 import logging
 
 logger = logging.getLogger(__name__)
+
 
 # SIGNUP: Make every new user a customer by default
 class SignUpView(APIView):
@@ -31,6 +32,7 @@ class SignUpView(APIView):
         logger.error("Registration error: %s", serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 # LOGIN
 class LoginView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -38,7 +40,12 @@ class LoginView(APIView):
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = authenticate(email=serializer.validated_data['email'], password=serializer.validated_data['password'])
+
+        user = authenticate(
+            email=serializer.validated_data['email'],
+            password=serializer.validated_data['password']
+        )
+
         if user:
             refresh = RefreshToken.for_user(user)
             return Response({
@@ -46,32 +53,54 @@ class LoginView(APIView):
                 'access': str(refresh.access_token),
                 'user': UserSerializer(user).data
             })
+
         return Response({"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
-# LOGOUT
-from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 
+# LOGOUT
 class LogoutView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
         refresh_token = request.data.get("refresh")
         if not refresh_token:
-            return Response({"detail": "Refresh token is required."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": "Refresh token is required."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         try:
             token = RefreshToken(refresh_token)
             token.blacklist()
-            return Response({"detail": "Logout successful"}, status=status.HTTP_205_RESET_CONTENT)
+            return Response(
+                {"detail": "Logout successful"},
+                status=status.HTTP_205_RESET_CONTENT
+            )
 
         except TokenError as e:
-            return Response({"detail": str(e)}, status=status.HTTP_205_RESET_CONTENT)
+            return Response(
+                {"detail": str(e)},
+                status=status.HTTP_205_RESET_CONTENT
+            )
 
         except Exception as e:
-            return Response({"detail": "Logout failed: " + str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": "Logout failed: " + str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
 
-# ✅ NEW: List of Customers
+# ✅ NEW: List all users (both managers and customers)
+class UsersListView(APIView):
+    permission_classes = [permissions.IsAdminUser]
+
+    def get(self, request):
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
+
+
+# ✅ Customers only list
 class CustomersListView(APIView):
     permission_classes = [permissions.IsAdminUser]
 
@@ -81,7 +110,7 @@ class CustomersListView(APIView):
         return Response(serializer.data)
 
 
-# ✅ NEW: Count of Customers and Managers
+# ✅ Stats: Total customers, managers, and users
 class UserStatsView(APIView):
     permission_classes = [permissions.IsAdminUser]
 
@@ -96,4 +125,29 @@ class UserStatsView(APIView):
         })
 
 
+# ✅ NEW: Assign roles (Admin/Manager only)
+class AssignRoleView(APIView):
+    permission_classes = [permissions.IsAdminUser]
 
+    def patch(self, request, pk):
+        role = request.data.get("role")
+
+        if role not in ["customer", "manager"]:
+            return Response(
+                {"detail": "Invalid role. Allowed: 'customer' or 'manager'."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            user = User.objects.get(pk=pk)
+            user.role = role
+            user.save()
+            return Response({
+                "detail": f"Role updated to {role}",
+                "user": UserSerializer(user).data
+            })
+        except User.DoesNotExist:
+            return Response(
+                {"detail": "User not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )

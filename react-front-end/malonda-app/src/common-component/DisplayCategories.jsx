@@ -1,6 +1,8 @@
+// src/components/DisplayCategories.jsx
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../Auth/api';
+import axios from 'axios'; // For direct GET
+import api from '../Auth/api'; // Keep for other requests
 import Swal from 'sweetalert2';
 import './DisplayCategories.css';
 
@@ -8,8 +10,9 @@ const DisplayCategories = () => {
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
 
+  // Use Axios GET for categories
   useEffect(() => {
-    api.get('/categories/')
+    axios.get('https://valid-brittan-malonda-024dca75.koyeb.app/getallcategories/')
       .then(res => {
         setCategories(res.data);
         Swal.fire({

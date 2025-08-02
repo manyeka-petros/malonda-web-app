@@ -4,7 +4,7 @@ from .views import (
     CategoryDetailView,
     ProductListCreateView,
     ProductDetailView,
-    ManagerDashboardView,  # Import the dashboard view
+    ManagerDashboardView,GetAllProductsView, GetAllCategoriesView  # Import the dashboard view
 )
 
 urlpatterns = [
@@ -18,4 +18,6 @@ urlpatterns = [
 
     # Manager dashboard endpoint
     path('manager-dashboard/', ManagerDashboardView.as_view(), name='manager-dashboard'),
+    path('getallproducts/', GetAllProductsView.as_view(), name='get-all-products'),
+    path('getallcategories/', GetAllCategoriesView.as_view(), name='get-all-categories'),
 ]

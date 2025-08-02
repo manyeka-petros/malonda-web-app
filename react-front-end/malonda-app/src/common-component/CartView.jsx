@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+// src/components/CartView.jsx
+import { useEffect, useState, useContext } from 'react';
 import api from '../Auth/api';
 import Swal from 'sweetalert2';
+import { AuthContext } from '../Auth/AuthContext';
 import styles from './CartView.module.css';
 import {
   FaShoppingCart, FaTrash, FaPlus, FaMinus,
-  FaArrowRight, FaTag, FaTimes, FaSpinner
+  FaArrowRight, FaTag, FaSpinner
 } from 'react-icons/fa';
 import { BiShoppingBag } from 'react-icons/bi';
 
@@ -16,6 +18,8 @@ const CartView = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
 
+  const { user, isLoggedIn } = useContext(AuthContext);
+
   // Calculate subtotal and total
   const subtotal = cart.reduce(
     (tot, i) => tot + (parseFloat(i.product_price) || 0) * i.quantity, 0
@@ -26,7 +30,9 @@ const CartView = () => {
   const fetchCart = async () => {
     try {
       setIsLoading(true);
-      const { data } = await api.get('/cart/');
+      const { data } = await api.get('/cart/', {
+        headers: { Authorization: `Bearer ${localStorage.getItem('access')}` }
+      });
       setCart(data);
     } catch {
       Swal.fire('Error', 'Failed to load cart items.', 'error');
@@ -54,7 +60,9 @@ const CartView = () => {
     if (!ok) return;
 
     try {
-      await api.delete(`/cart/${id}/`);
+      await api.delete(`/cart/${id}/`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('access')}` }
+      });
       Swal.fire({ icon: 'success', title: 'Removed!', timer: 1200, showConfirmButton: false });
       fetchCart();
     } catch {
@@ -66,7 +74,9 @@ const CartView = () => {
   const handleQuantityChange = async (id, q) => {
     if (q < 1) return;
     try {
-      await api.patch(`/cart/${id}/`, { quantity: q });
+      await api.patch(`/cart/${id}/`, { quantity: q }, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('access')}` }
+      });
       fetchCart();
     } catch {
       Swal.fire('Error', 'Failed to update quantity.', 'error');
@@ -80,7 +90,9 @@ const CartView = () => {
       return;
     }
     try {
-      const { data } = await api.post('/apply-discount/', { code: discountCode });
+      const { data } = await api.post('/apply-discount/', { code: discountCode }, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('access')}` }
+      });
       setDiscountApplied(true);
       setDiscountAmount(data.discount_amount);
       Swal.fire('Success', `You saved $${parseFloat(data.discount_amount).toFixed(2)}`, 'success');
@@ -92,7 +104,9 @@ const CartView = () => {
   // Remove discount
   const removeDiscount = async () => {
     try {
-      await api.delete('/remove-discount/');
+      await api.delete('/remove-discount/', {
+        headers: { Authorization: `Bearer ${localStorage.getItem('access')}` }
+      });
       setDiscountApplied(false);
       setDiscountAmount(0);
       setDiscountCode('');
@@ -102,8 +116,13 @@ const CartView = () => {
     }
   };
 
-  // Checkout
+  // Checkout (PayChangu)
   const handleCheckout = async () => {
+    if (!isLoggedIn) {
+      Swal.fire('Login Required', 'Please login to checkout.', 'warning');
+      return;
+    }
+
     if (!cart.length) {
       Swal.fire('Empty Cart', 'Add items before checkout.', 'warning');
       return;
@@ -113,18 +132,21 @@ const CartView = () => {
 
     try {
       const metaData = {
-        cartItems: cart.map(i => `${i.product_name} (x${i.quantity})`)
+        cartItems: cart.map(i => `${i.product_name} (x${i.quantity})`),
+        userId: user?.id || null
       };
 
       const { data } = await api.post('/payments/initiate/', {
         amount: totalPrice,
         currency: 'MWK',
-        email: 'customer@example.com',
-        first_name: 'John',
-        last_name: 'Doe',
+        email: user?.email || 'customer@example.com',
+        first_name: user?.first_name || 'Guest',
+        last_name: user?.last_name || '',
         title: 'Cart Checkout',
         description: 'Payment for items in cart',
         meta: metaData
+      }, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('access')}` }
       });
 
       if (data.status === 'success' && data.data?.checkout_url) {
@@ -140,7 +162,6 @@ const CartView = () => {
     }
   };
 
-  // Image helper with better loading and error handling
   const renderImage = (img) => {
     const fallback = 'https://via.placeholder.com/300x220?text=No+Image';
     const url = img?.startsWith('http') ? img : img ? `http://127.0.0.1:8000${img.startsWith('/') ? '' : '/'}${img}` : fallback;

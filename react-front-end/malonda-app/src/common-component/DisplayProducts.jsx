@@ -1,6 +1,8 @@
+// src/components/DisplayProducts.jsx
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import api from '../Auth/api';
+import axios from 'axios'; // Axios for GET
+import api from '../Auth/api'; // Your existing api instance for other requests
 import Swal from 'sweetalert2';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {
@@ -13,10 +15,10 @@ const DisplayProducts = () => {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
   const [searchTerm, setSearch] = useState('');
-  const [userRole, setUserRole] = useState('manager');
 
+  // Using direct axios GET
   useEffect(() => {
-    api.get('/products/')
+    axios.get('https://valid-brittan-malonda-024dca75.koyeb.app/getallproducts/')
       .then(res => setProducts(res.data))
       .catch(() =>
         Swal.fire({
@@ -34,6 +36,7 @@ const DisplayProducts = () => {
   const imgUrl = (src) =>
     src || 'https://via.placeholder.com/600x450?text=No+Image';
 
+  // Use api instance for DELETE
   const handleDelete = (id) => {
     Swal.fire({
       title: 'Delete Product?',
@@ -102,7 +105,6 @@ const DisplayProducts = () => {
       <div className="products-hero">
         <div className="hero-content">
           <h2 className="hero-intro">Welcome to Malonda Marketplace</h2>
-          
           <h1 className="hero-main-title">Our Products</h1>
           <p className="hero-subtitle">
             Discover the finest selection of premium items
@@ -163,15 +165,14 @@ const DisplayProducts = () => {
                         >
                           <FaShare />
                         </button>
-                        {userRole === 'manager' && (
-                          <button className="delete-button" title="Delete"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              handleDelete(prod.id);
-                            }}>
-                            <FaTrash />
-                          </button>
-                        )}
+
+                        <button className="delete-button" title="Delete"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleDelete(prod.id);
+                          }}>
+                          <FaTrash />
+                        </button>
                       </div>
                     </div>
 

@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 import dj_database_url
+from datetime import timedelta
 
 # Load environment variables from .env
 load_dotenv()
@@ -31,6 +32,8 @@ INSTALLED_APPS = [
 
     # Third-party apps
     'corsheaders',  # CORS support for frontend
+    'rest_framework',  # Django REST Framework
+    'rest_framework_simplejwt.token_blacklist',  # JWT token blacklist
     'whitenoise.runserver_nostatic',  # Handle static files in dev
 ]
 
@@ -69,12 +72,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'malonda.wsgi.application'
 
-# DATABASE CONFIGURATION (Only Neon Postgres)
+# DATABASE CONFIGURATION (Postgres for localhost)
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.getenv('DATABASE_URL'),  # Must be set in .env or Koyeb
-        conn_max_age=600,  # Persistent DB connections
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'shops',          # your database name
+        'USER': 'postgres',       # your database username
+        'PASSWORD': 'manyeka12',  # your database password
+        'HOST': 'localhost',      # database is hosted locally
+        'PORT': '5432',           # default PostgreSQL port
+    }
 }
 
 # STATIC & MEDIA FILES
@@ -89,4 +96,32 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS (for frontend integration)
-CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '').split(',') if os.getenv('CORS_ALLOWED_ORIGINS') else []
+CORS_ALLOWED_ORIGINS = (
+    os.getenv('CORS_ALLOWED_ORIGINS', '').split(',') 
+    if os.getenv('CORS_ALLOWED_ORIGINS') else []
+)
+
+# === REST FRAMEWORK & JWT SETTINGS ===
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
+}
+
+# JWT TOKEN LIFETIME SETTINGS
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  # 1 hour
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
+# === PayChangu Settings ===
+PAYCHANGU_PUBLIC_KEY = os.getenv('PAYCHANGU_PUBLIC_KEY')
+PAYCHANGU_SECRET_KEY = os.getenv('PAYCHANGU_SECRET_KEY')
+PAYCHANGU_CALLBACK_URL = os.getenv('PAYCHANGU_CALLBACK_URL')
+PAYCHANGU_RETURN_URL = os.getenv('PAYCHANGU_RETURN_URL')

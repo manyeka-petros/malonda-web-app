@@ -19,15 +19,21 @@ export default function Register() {
     e.preventDefault();
 
     try {
-      const res = await api.post('/register/', form);
+      // ✅ Update endpoint to match backend
+      const res = await api.post('/signup/', form);
       
+      // Save tokens and user details
       localStorage.setItem('access', res.data.access);
       localStorage.setItem('refresh', res.data.refresh);
+      localStorage.setItem('role', res.data.user.role); // store role (customer by default)
+      localStorage.setItem('user', JSON.stringify(res.data.user)); // optional: store full user info
 
       Swal.fire({
         icon: 'success',
         title: 'Registration Successful',
         text: 'You have been registered successfully!',
+      }).then(() => {
+        window.location.href = '/'; // redirect to home
       });
 
     } catch (err) {
