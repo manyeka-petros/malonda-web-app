@@ -69,10 +69,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'malonda.wsgi.application'
 
-# DATABASE CONFIGURATION (Neon or fallback to SQLite)
+# DATABASE CONFIGURATION (Only Neon Postgres)
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.getenv('DATABASE_URL', f'sqlite:///{BASE_DIR / "db.sqlite3"}'),
+        default=os.getenv('DATABASE_URL'),  # Must be set in .env or Koyeb
         conn_max_age=600,  # Persistent DB connections
     )
 }
@@ -90,4 +90,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS (for frontend integration)
 CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '').split(',') if os.getenv('CORS_ALLOWED_ORIGINS') else []
-

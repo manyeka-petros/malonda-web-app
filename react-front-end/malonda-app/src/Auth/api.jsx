@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create an Axios instance with base URL pointing to your Django backend
 const api = axios.create({
-  baseURL: 'http://127.0.0.1:8000', // Change this if your backend URL differs
+  baseURL: 'https://valid-brittan-malonda-024dca75.koyeb.app/', // Change this if your backend URL differs
 });
 
 // Add a request interceptor to automatically include Authorization header if token exists
