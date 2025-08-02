@@ -74,14 +74,9 @@ WSGI_APPLICATION = 'malonda.wsgi.application'
 
 # DATABASE CONFIGURATION (Postgres for localhost)
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'shops',          # your database name
-        'USER': 'postgres',       # your database username
-        'PASSWORD': 'manyeka12',  # your database password
-        'HOST': 'localhost',      # database is hosted locally
-        'PORT': '5432',           # default PostgreSQL port
-    }
+    'default': dj_database_url.config(
+        default=os.getenv("DATABASE_URL")  # Koyeb sets this automatically
+    )
 }
 
 # STATIC & MEDIA FILES
